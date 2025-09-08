@@ -16,7 +16,7 @@ class Player {
   void SaveToFile(const std::string& filename,int &score, int &size) const;
   std::string GetName() const;
   void PrintGameHistory(const std::string& filename, bool topScoresOnly) const;
-
+  void SetName(const std::string& n) { name = n; }
 
  private:
    std::string name;
