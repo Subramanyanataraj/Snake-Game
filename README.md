@@ -97,21 +97,28 @@ cmake .. && make
 ├── data/
 │ └── GameHistory.txt
 └── src/
-├── HistoryDialog.cpp
-├── controller.cpp
-├── controller.h
-├── game.cpp
-├── game.h
-├── main.cpp
-├── menu.cpp
-├── menu.h
-├── obstacle.cpp
-├── obstacle.h
-├── player.cpp
-├── player.h
-├── renderer.cpp
-├── renderer.h
-└── snake.h
+  ├── HistoryDialog.cpp
+  ├── HistoryDialog.h
+  ├── MainMenuDialog.cpp
+  ├── MainMenuDialog.h
+  ├── ResultsDialog.cpp
+  ├── ResultsDialog.h
+  ├──StartDialog.cpp
+  ├──StartDialog.h
+  ├── controller.cpp
+  ├── controller.h
+  ├── game.cpp
+  ├── game.h
+  ├── main.cpp
+  ├── menu.cpp
+  ├── menu.h
+  ├── obstacle.cpp
+  ├── obstacle.h
+  ├── player.cpp
+  ├── player.h
+  ├── renderer.cpp
+  ├── renderer.h
+  └── snake.h
 ```
 
 ## CC Attribution-ShareAlike 4.0 International
