@@ -97,6 +97,7 @@ cmake .. && make
 ├── data/
 │ └── GameHistory.txt
 └── src/
+├── HistoryDialog.cpp
 ├── controller.cpp
 ├── controller.h
 ├── game.cpp
