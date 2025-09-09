@@ -12,5 +12,5 @@ ResultsDialog::ResultsDialog(int score, int size, QWidget* parent)
     auto* ok = new QPushButton("OK", this);
     layout->addWidget(ok);
     connect(ok, &QPushButton::clicked, this, &QDialog::accept);
-    resize(260, 140);
+    resize(1000, 500);
 }

@@ -19,31 +19,33 @@
 # string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 # target_link_libraries(SnakeGame ${SDL2_LIBRARIES} stdc++fs pthread)
 
-cmake_minimum_required(VERSION 3.16)   # Qt6 finder works reliably from 3.16+
+
+cmake_minimum_required(VERSION 3.16)
 project(SnakeGame LANGUAGES CXX)
-# Enable Qt's automatic MOC/UIC/RCC
+
+# Qt automagic
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
-# ---- C++ standard
+
+# C++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# ---- Project options
-option(USE_QT_LAUNCHER "Enable Qt6 launcher (pre/post UI) around SDL game" ON)
-
-# ---- Common compile warnings
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-# ---- Define SOURCE_DIR macro for your code that writes GameHistory.txt
+# Options
+option(USE_QT_LAUNCHER "Enable Qt6 launcher (pre/post UI) around SDL game" ON)
+
+# Macro used by your code
 add_definitions(-DSOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
-# ---- SDL2 (keep your current game as-is)
+# SDL2
 find_package(SDL2 REQUIRED)
-# Prefer modern include usage, but keep compatibility with your variable
-include_directories(${SDL2_INCLUDE_DIRS} src)
 
-# ---- Game sources (unchanged SDL game)
+# Threads
+find_package(Threads REQUIRED)
+
+# Sources
 set(GAME_SOURCES
     src/main.cpp
     src/game.cpp
@@ -53,10 +55,11 @@ set(GAME_SOURCES
     src/menu.cpp
     src/player.cpp
     src/obstacle.cpp
+    # Qt dialogs (compiled always; linked to Qt only when option ON)
     src/StartDialog.cpp
-    src/StartDialog.h       # <- include headers too
+    src/StartDialog.h
     src/ResultsDialog.cpp
-    src/ResultsDialog.h     # <- include headers too
+    src/ResultsDialog.h
     src/MainMenuDialog.cpp 
     src/MainMenuDialog.h
     src/HistoryDialog.cpp
@@ -65,46 +68,21 @@ set(GAME_SOURCES
 
 add_executable(SnakeGame ${GAME_SOURCES})
 
-# Some older toolchains needed stdc++fs; with C++17 it’s usually not required.
-# If your linker complains about filesystem, uncomment the next line:
-# target_link_libraries(SnakeGame stdc++fs)
-
-# pthread for your obstacle threads
-find_package(Threads REQUIRED)
-# target_link_libraries(SnakeGame ${SDL2_LIBRARIES} Threads::Threads)
-target_link_libraries(SnakeGame ${SDL2_LIBRARIES} Threads::Threads stdc++fs)
-
-# ---------------------------
-# Optional: Qt6 launcher flow
-# ---------------------------
-if (USE_QT_LAUNCHER)
-  # Expect these files in a 'qt' subfolder:
-  #   qt/StartDialog.h  qt/StartDialog.cpp
-  #   qt/ResultsDialog.h qt/ResultsDialog.cpp
-  #
-  # And your main.cpp updated to:
-  #   - run a small Qt dialog first (collect name/difficulty)
-  #   - run the SDL game (same as before)
-  #   - re-open a Qt dialog to show results
-  #
-  # (I already provided these files in the previous message—use those.)
-
-  find_package(Qt6 6.2 REQUIRED COMPONENTS Widgets)
-
-  # Add the Qt sources to the same executable so you don’t need two binaries.
-  # target_sources(SnakeGame PRIVATE
-  #     qt/StartDialog.cpp
-  #     qt/ResultsDialog.cpp
-  # )
-  target_sources(SnakeGame PRIVATE
-  src/StartDialog.cpp
-  src/ResultsDialog.cpp
+# Include dirs (target-scoped)
+target_include_directories(SnakeGame PRIVATE
+    ${SDL2_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/src
 )
-  target_include_directories(SnakeGame PRIVATE qt)
-  target_link_libraries(SnakeGame Qt6::Widgets)
-  
-  # On Windows: make sure we still have a console for your std::cout end-screen prints.
-  # If you prefer hiding the console, you can set WIN32 on the target, but then
-  # you won't see terminal prints:
-  # set_target_properties(SnakeGame PROPERTIES WIN32_EXECUTABLE FALSE)
+
+# Link SDL2, threads, and (for now) experimental filesystem
+target_link_libraries(SnakeGame PRIVATE
+    ${SDL2_LIBRARIES}
+    Threads::Threads
+    stdc++fs
+)
+
+# Qt (only when launcher enabled)
+if (USE_QT_LAUNCHER)
+  find_package(Qt6 6.2 REQUIRED COMPONENTS Widgets)
+  target_link_libraries(SnakeGame PRIVATE Qt6::Widgets)
 endif()

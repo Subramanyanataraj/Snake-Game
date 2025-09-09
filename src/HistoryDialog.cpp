@@ -29,7 +29,7 @@ HistoryDialog::HistoryDialog(const QString& filePath, bool topOnly, QWidget* par
     table_->horizontalHeader()->setStretchLastSection(true);
     layout->addWidget(table_);
     populate(recs);
-    resize(600, 400);
+    resize(1000, 500);
 }
 
 

@@ -28,7 +28,7 @@ StartDialog::StartDialog(QWidget* parent) : QDialog(parent) {
     layout->addWidget(startBtn_);
     connect(startBtn_, &QPushButton::clicked, this, &StartDialog::onAccept);
 
-    resize(100, 520);
+    resize(1000, 500);
 }
 
 QString StartDialog::playerName() const { return nameEdit_->text().trimmed(); }

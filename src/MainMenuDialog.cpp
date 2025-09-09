@@ -16,7 +16,7 @@ MainMenuDialog::MainMenuDialog(QWidget* parent): QDialog(parent) {
     connect(b2,&QPushButton::clicked,this,&MainMenuDialog::onHistory);
     connect(b3,&QPushButton::clicked,this,&MainMenuDialog::onHigh);
     connect(b4,&QPushButton::clicked,this,&MainMenuDialog::onExit);
-    resize(1000, 520);
+    resize(1000, 500);
 }
 void MainMenuDialog::onStart(){ choice_=StartNewGame; accept(); }
 void MainMenuDialog::onHistory(){ choice_=History; accept(); }
